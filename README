@@ -16,6 +16,3 @@ string input 2 = "xz62rP"
 integer input 1 = ***testing***
 integer input 2 = 0
 integer input 3 (length) = 15
-
-**10/22/2012
-**Current code now tests when only the length and first string input are known for 25 million combinations

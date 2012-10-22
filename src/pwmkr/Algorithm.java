@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 // This class describes the algorithm used for all cael-hammer projects
@@ -56,6 +57,10 @@ public class Algorithm {
 		bfi = BigInteger.valueOf(Cprime);
 		bfi = bfi.multiply(BigInteger.valueOf(Dprime));
 
+		BigInteger temp = BigInteger.valueOf(Aprime).multiply(BigInteger.valueOf(Bprime));
+		
+		bfi = bfi.add(temp);
+		
 		String bfiString = bfi.toString();
 
 		// Remove trailing 0s from the BigInteger
@@ -87,7 +92,7 @@ public class Algorithm {
 		int nrow = Math.abs((Aprime * row) % rows);
 		int ncol = Math.abs((Bprime * col) % columns);
 		int nLength = Math.abs((Cprime * length) % (rows * columns));
-
+		
 		// This is here in case the mod above returns low values which lead to high duplication
 		if(nLength < length)
 		{
@@ -100,7 +105,7 @@ public class Algorithm {
 		char[] offset = new char[nLength];
 		for (int i = 0; i < nLength; i++)
 		{
-			offset[i] = inRAMFile.get((nrow + (i + ncol) / columns) % rows)
+			offset[i] = inRAMFile.get((nrow + (ncol + i) / columns) % rows)
 					.charAt((ncol + i) % columns);
 		}
 

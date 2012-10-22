@@ -11,6 +11,13 @@ public class MainClass
 	//private final static String alphaNumClass = "[a-zA-Z0-9@]";
 	private final static String symbolClass = "[a-zA-Z0-9!@#$%^&*()_+=,.<>/';:{}]";
 	
+	private final static String[] numTest = {"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"};
+	private final static String[] alphaTest = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y"};
+	private final static String[] aniTest = {"monkey","mouse","squirrel","cat","dog","horse","ant","spider","rabbit","lion","tiger","cougar","elephant",
+											"llama","tapir","panther","worm","fish","dolphin","whale","mollusk","snake","lizard","frog","salamander"};
+	
+	private static String filename;
+	
 	static void threadMessage(String message) 
 	{
         String threadName = Thread.currentThread().getName();
@@ -23,6 +30,7 @@ public class MainClass
         private int start;
         private int length;
         public static Set<String> pws;
+        public static Set<String> dpws;
         private String A,B;
         private Algorithm algInstance;
         
@@ -33,11 +41,15 @@ public class MainClass
         	length = 15;
         	if(pws == null)
         	{
-        		pws = Collections.synchronizedSet(new HashSet<String>());
+        		pws = Collections.synchronizedSet(new HashSet<String>(30000000));
+        	}
+        	if(dpws == null)
+        	{
+        		dpws = Collections.synchronizedSet(new HashSet<String>());
         	}
         	A = "yahoo";
         	B = "xz62rP";
-        	algInstance = new Algorithm("test");
+        	algInstance = new Algorithm(filename);
         }
 
 		public void run() 
@@ -46,18 +58,25 @@ public class MainClass
 			{
                 // Tries a set number of passwords and flags non-unique passwords
 				// At the end of the loop, prints out the total number of unique passwords in the set for the terminated thread
-				for (int i = start; i<10000000; i += 20) 
+				for (int i = start; i<1000; i += 20) 
                 {
-					String temp = algInstance.getPW("test", A, B, i, 0, length);
-					if(!pws.add(temp))
+					for(int j=0; j<1000; j++)
 					{
-						System.out.println("duplicate found: "+ temp + " input was: " + i);
-					}
-					else
-					{
-						if(pws.size()%25000 == 0)
+						for(String s : numTest)
 						{
-							System.out.println("added: " + temp + " is the " + pws.size() + "th term");
+							String temp = algInstance.getPW(filename, A, s, i, j, length);
+							if(!pws.add(temp))
+							{
+								System.out.println("duplicate found: "+ temp + " input was: (" + i + "," + j + "," + s + ")");
+								dpws.add(temp);						
+							}
+							else
+							{
+								if(pws.size()%25000 == 0)
+								{
+									System.out.println("added: " + temp + " is the " + pws.size() + "th term");
+								}
+							}
 						}
 					}
                 }
@@ -87,7 +106,10 @@ public class MainClass
 	
 	public static void main(String[] args)
 	{
-		GenerateFile.seedGen("test", symbolClass, 100, 100, 1000);
+		filename = args[0];
+		int seed = Integer.parseInt(args[1]);
+		//GenerateFile.defaultGen(filename, symbolClass, 100, 100);
+		GenerateFile.seedGen(filename, symbolClass, 100, 100, seed);
 		long start = System.nanoTime();
 		
 		// Create and start all the threads (20 in all)
@@ -140,6 +162,7 @@ public class MainClass
 		
 		long end = System.nanoTime();
 		System.out.println("total unique: " + MessageLoop.pws.size());
+		System.out.println("total number of duplicates: " + MessageLoop.dpws.size());
 		System.out.println(getTime(end-start));
 	}
 }
