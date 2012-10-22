@@ -19,3 +19,4 @@ integer input 3 (length) = 15
 
 **10/22/2012
 **Current code now tests when only the length and first string input are known for 25 million combinations
+**Algorithm changes to complement the multiple unknown inputs for added security
