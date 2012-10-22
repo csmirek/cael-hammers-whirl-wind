@@ -10,13 +10,14 @@ Current code tests the algorithm for the situation where all inputs are known ex
 
 ***This code base will be the only one with a commented algorithm/generateFile class
 
-Current inputs are:
-string input 1 = "yahoo"
-string input 2 = "xz62rP"
-integer input 1 = ***testing***
-integer input 2 = 0
-integer input 3 (length) = 15
+    Current inputs are:
+    string input 1 = "yahoo"
+    string input 2 = "xz62rP"
+    integer input 1 = ***testing***
+    integer input 2 = 0
+    integer input 3 (length) = 15
 
-**10/22/2012
-**Current code now tests when only the length and first string input are known for 25 million combinations
-**Algorithm changes to complement the multiple unknown inputs for added security
+###*Edit
+    10/22/2012
+    Current code now tests when only the length and first string input are known for 25 million combinations
+    Algorithm changes to complement the multiple unknown inputs for added security
