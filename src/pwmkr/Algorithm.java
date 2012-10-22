@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 // This class describes the algorithm used for all cael-hammer projects
@@ -18,7 +17,7 @@ public class Algorithm {
 	
 	// Unique constructor for this project to help with the overhead of needing to read a file on every call to getPW
 	// Reads the file supplied into memory
-	public Algorithm(String filename) 
+	public Algorithm(String filename)
 	{
 		if(inRAMFile == null || inRAMFile.isEmpty())
 		{

@@ -31,17 +31,17 @@ public class MainClass
         private int length;
         public static Set<String> pws;
         public static Set<String> dpws;
-        private String A,B;
+        private String A,B,Loop;
         private Algorithm algInstance;
         
         // Constructor for the MessageLoop class, initializes all default values and creates an instance of the Algorithm class for each thread
-        public MessageLoop(int i)
+        public MessageLoop(int i, String loop)
         {
         	start = i;
         	length = 15;
         	if(pws == null)
         	{
-        		pws = Collections.synchronizedSet(new HashSet<String>(30000000));
+        		pws = Collections.synchronizedSet(new HashSet<String>(40000000));
         	}
         	if(dpws == null)
         	{
@@ -49,10 +49,87 @@ public class MainClass
         	}
         	A = "yahoo";
         	B = "xz62rP";
+        	Loop = loop;
         	algInstance = new Algorithm(filename);
         }
 
 		public void run() 
+		{
+			if(Loop.equals("threeLoop"))
+			{
+				threeLoop();
+			}
+			else if(Loop.equals("iLoop"))
+			{
+				iLoop();
+			}
+			else if(Loop.equals("jLoop"))
+			{
+				jLoop();
+			}
+		}
+		
+		private void iLoop()
+		{
+			try
+			{
+				for (int i=start; i<30000000; i+=20)
+				{
+					String temp;
+					temp = algInstance.getPW(filename, A, B, i, 0, length);
+					
+					if(!pws.add(temp))
+					{
+						System.out.println("duplicate found: "+ temp + " input was: (" + i + ")");
+						dpws.add(temp);						
+					}
+					else
+					{
+						if(pws.size() % 10000 == 0)
+						{
+							System.out.println("added: " + temp + " there are now: " + pws.size() + "elements in set");
+						}
+					}
+				}
+			}
+			catch (FileNotFoundException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		private void jLoop()
+		{
+			try
+			{
+				for (int j=start; j<30000000; j+=20)
+				{
+					String temp;
+					temp = algInstance.getPW(filename, A, B, 0, j, length);
+					
+					if(!pws.add(temp))
+					{
+						System.out.println("duplicate found: "+ temp + " input was: (" + j + ")");
+						dpws.add(temp);						
+					}
+					else
+					{
+						if(pws.size() % 10000 == 0)
+						{
+							System.out.println("added: " + temp + " there are now: " + pws.size() + "elements in set");
+						}
+					}
+				}
+			}
+			catch (FileNotFoundException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		private void threeLoop()
 		{
 			try 
 			{
@@ -62,7 +139,7 @@ public class MainClass
                 {
 					for(int j=0; j<1000; j++)
 					{
-						for(String s : numTest)
+						for(String s : alphaTest)
 						{
 							String temp = algInstance.getPW(filename, A, s, i, j, length);
 							if(!pws.add(temp))
@@ -72,9 +149,9 @@ public class MainClass
 							}
 							else
 							{
-								if(pws.size()%25000 == 0)
+								if(pws.size() % 10000 == 0)
 								{
-									System.out.println("added: " + temp + " is the " + pws.size() + "th term");
+									System.out.println("added: " + temp + " there are now: " + pws.size() + "elements in set");
 								}
 							}
 						}
@@ -108,31 +185,32 @@ public class MainClass
 	{
 		filename = args[0];
 		int seed = Integer.parseInt(args[1]);
+		String loop = args[2];
 		//GenerateFile.defaultGen(filename, symbolClass, 100, 100);
 		GenerateFile.seedGen(filename, symbolClass, 100, 100, seed);
 		long start = System.nanoTime();
 		
 		// Create and start all the threads (20 in all)
-		Thread a = new Thread(new MessageLoop(0));
-		Thread b = new Thread(new MessageLoop(1));
-		Thread c = new Thread(new MessageLoop(2));
-		Thread d = new Thread(new MessageLoop(3));
-		Thread e = new Thread(new MessageLoop(4));
-		Thread f = new Thread(new MessageLoop(5));
-		Thread g = new Thread(new MessageLoop(6));
-		Thread h = new Thread(new MessageLoop(7));
-		Thread i = new Thread(new MessageLoop(8));
-		Thread j = new Thread(new MessageLoop(9));
-		Thread k = new Thread(new MessageLoop(10));
-		Thread l = new Thread(new MessageLoop(11));
-		Thread m = new Thread(new MessageLoop(12));
-		Thread n = new Thread(new MessageLoop(13));
-		Thread o = new Thread(new MessageLoop(14));
-		Thread p = new Thread(new MessageLoop(15));
-		Thread q = new Thread(new MessageLoop(16));
-		Thread r = new Thread(new MessageLoop(17));
-		Thread s = new Thread(new MessageLoop(18));
-		Thread t = new Thread(new MessageLoop(19));
+		Thread a = new Thread(new MessageLoop(0,loop));
+		Thread b = new Thread(new MessageLoop(1,loop));
+		Thread c = new Thread(new MessageLoop(2,loop));
+		Thread d = new Thread(new MessageLoop(3,loop));
+		Thread e = new Thread(new MessageLoop(4,loop));
+		Thread f = new Thread(new MessageLoop(5,loop));
+		Thread g = new Thread(new MessageLoop(6,loop));
+		Thread h = new Thread(new MessageLoop(7,loop));
+		Thread i = new Thread(new MessageLoop(8,loop));
+		Thread j = new Thread(new MessageLoop(9,loop));
+		Thread k = new Thread(new MessageLoop(10,loop));
+		Thread l = new Thread(new MessageLoop(11,loop));
+		Thread m = new Thread(new MessageLoop(12,loop));
+		Thread n = new Thread(new MessageLoop(13,loop));
+		Thread o = new Thread(new MessageLoop(14,loop));
+		Thread p = new Thread(new MessageLoop(15,loop));
+		Thread q = new Thread(new MessageLoop(16,loop));
+		Thread r = new Thread(new MessageLoop(17,loop));
+		Thread s = new Thread(new MessageLoop(18,loop));
+		Thread t = new Thread(new MessageLoop(19,loop));
 		a.start();
 		b.start();
 		c.start();
