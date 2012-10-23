@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 // This class describes the algorithm used for all cael-hammer projects
@@ -90,12 +91,13 @@ public class Algorithm {
 		// Get the initial starting positions for reading the file
 		int nrow = Math.abs((Aprime * row) % rows);
 		int ncol = Math.abs((Bprime * col) % columns);
-		int nLength = Math.abs((Cprime * length) % (rows * columns));
+		int nLength = Math.abs(((Cprime + Dprime) * length) % (rows * columns));
 		
 		// This is here in case the mod above returns low values which lead to high duplication
 		if(nLength < length)
 		{
-			nLength = length * rows;
+			Random rand = new Random(Cprime-Dprime);
+			nLength = length * (rand.nextInt(rows)+1);
 		}
 		
 		// Pull nLength characters in order from the file

@@ -31,11 +31,11 @@ public class MainClass
         private int length;
         public static Set<String> pws;
         public static Set<String> dpws;
-        private String A,B,Loop;
+        private String A,B,Loop,Type;
         private Algorithm algInstance;
         
         // Constructor for the MessageLoop class, initializes all default values and creates an instance of the Algorithm class for each thread
-        public MessageLoop(int i, String loop)
+        public MessageLoop(int i, String loop, String type)
         {
         	start = i;
         	length = 15;
@@ -50,6 +50,7 @@ public class MainClass
         	A = "yahoo";
         	B = "xz62rP";
         	Loop = loop;
+        	Type = type;
         	algInstance = new Algorithm(filename);
         }
 
@@ -57,7 +58,7 @@ public class MainClass
 		{
 			if(Loop.equals("threeLoop"))
 			{
-				threeLoop();
+				threeLoop(Type);
 			}
 			else if(Loop.equals("iLoop"))
 			{
@@ -87,7 +88,7 @@ public class MainClass
 					{
 						if(pws.size() % 10000 == 0)
 						{
-							System.out.println("added: " + temp + " there are now: " + pws.size() + "elements in set");
+							System.out.println("added: " + temp + " there are now: " + pws.size() + " elements in set");
 						}
 					}
 				}
@@ -117,7 +118,7 @@ public class MainClass
 					{
 						if(pws.size() % 10000 == 0)
 						{
-							System.out.println("added: " + temp + " there are now: " + pws.size() + "elements in set");
+							System.out.println("added: " + temp + " there are now: " + pws.size() + " elements in set");
 						}
 					}
 				}
@@ -129,8 +130,23 @@ public class MainClass
 			}
 		}
 		
-		private void threeLoop()
+		private void threeLoop(String type)
 		{
+			String[] test;
+			
+			if(type.equals("alpha"))
+			{
+				test = alphaTest;
+			}
+			else if(type.equals("ani"))
+			{
+				test = aniTest;
+			}
+			else
+			{
+				test = numTest;
+			}
+			
 			try 
 			{
                 // Tries a set number of passwords and flags non-unique passwords
@@ -139,7 +155,7 @@ public class MainClass
                 {
 					for(int j=0; j<1000; j++)
 					{
-						for(String s : alphaTest)
+						for(String s : test)
 						{
 							String temp = algInstance.getPW(filename, A, s, i, j, length);
 							if(!pws.add(temp))
@@ -151,7 +167,7 @@ public class MainClass
 							{
 								if(pws.size() % 10000 == 0)
 								{
-									System.out.println("added: " + temp + " there are now: " + pws.size() + "elements in set");
+									System.out.println("added: " + temp + " there are now: " + pws.size() + " elements in set");
 								}
 							}
 						}
@@ -185,32 +201,43 @@ public class MainClass
 	{
 		filename = args[0];
 		int seed = Integer.parseInt(args[1]);
-		String loop = args[2];
-		//GenerateFile.defaultGen(filename, symbolClass, 100, 100);
+		String loop = "";
+		String type = "";
+		try
+		{
+			loop = args[2];
+		}
+		catch(Exception e){ }
+		try
+		{
+			type = args[3];
+		}
+		catch(Exception e){ }
+		
 		GenerateFile.seedGen(filename, symbolClass, 100, 100, seed);
 		long start = System.nanoTime();
 		
 		// Create and start all the threads (20 in all)
-		Thread a = new Thread(new MessageLoop(0,loop));
-		Thread b = new Thread(new MessageLoop(1,loop));
-		Thread c = new Thread(new MessageLoop(2,loop));
-		Thread d = new Thread(new MessageLoop(3,loop));
-		Thread e = new Thread(new MessageLoop(4,loop));
-		Thread f = new Thread(new MessageLoop(5,loop));
-		Thread g = new Thread(new MessageLoop(6,loop));
-		Thread h = new Thread(new MessageLoop(7,loop));
-		Thread i = new Thread(new MessageLoop(8,loop));
-		Thread j = new Thread(new MessageLoop(9,loop));
-		Thread k = new Thread(new MessageLoop(10,loop));
-		Thread l = new Thread(new MessageLoop(11,loop));
-		Thread m = new Thread(new MessageLoop(12,loop));
-		Thread n = new Thread(new MessageLoop(13,loop));
-		Thread o = new Thread(new MessageLoop(14,loop));
-		Thread p = new Thread(new MessageLoop(15,loop));
-		Thread q = new Thread(new MessageLoop(16,loop));
-		Thread r = new Thread(new MessageLoop(17,loop));
-		Thread s = new Thread(new MessageLoop(18,loop));
-		Thread t = new Thread(new MessageLoop(19,loop));
+		Thread a = new Thread(new MessageLoop(0,loop,type));
+		Thread b = new Thread(new MessageLoop(1,loop,type));
+		Thread c = new Thread(new MessageLoop(2,loop,type));
+		Thread d = new Thread(new MessageLoop(3,loop,type));
+		Thread e = new Thread(new MessageLoop(4,loop,type));
+		Thread f = new Thread(new MessageLoop(5,loop,type));
+		Thread g = new Thread(new MessageLoop(6,loop,type));
+		Thread h = new Thread(new MessageLoop(7,loop,type));
+		Thread i = new Thread(new MessageLoop(8,loop,type));
+		Thread j = new Thread(new MessageLoop(9,loop,type));
+		Thread k = new Thread(new MessageLoop(10,loop,type));
+		Thread l = new Thread(new MessageLoop(11,loop,type));
+		Thread m = new Thread(new MessageLoop(12,loop,type));
+		Thread n = new Thread(new MessageLoop(13,loop,type));
+		Thread o = new Thread(new MessageLoop(14,loop,type));
+		Thread p = new Thread(new MessageLoop(15,loop,type));
+		Thread q = new Thread(new MessageLoop(16,loop,type));
+		Thread r = new Thread(new MessageLoop(17,loop,type));
+		Thread s = new Thread(new MessageLoop(18,loop,type));
+		Thread t = new Thread(new MessageLoop(19,loop,type));
 		a.start();
 		b.start();
 		c.start();
