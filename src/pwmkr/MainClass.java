@@ -92,10 +92,10 @@ public class MainClass
 						}
 					}
 				}
+				threadMessage("terminated with: " + Integer.valueOf(pws.size()).toString() + " in pws");
 			}
 			catch (FileNotFoundException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -122,10 +122,10 @@ public class MainClass
 						}
 					}
 				}
+				threadMessage("terminated with: " + Integer.valueOf(pws.size()).toString() + " in pws");
 			}
 			catch (FileNotFoundException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
