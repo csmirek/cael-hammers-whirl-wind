@@ -16,6 +16,9 @@ public class MainClass
 	private final static String[] aniTest = {"monkey","mouse","squirrel","cat","dog","horse","ant","spider","rabbit","lion","tiger","cougar","elephant",
 											"llama","tapir","panther","worm","fish","dolphin","whale","mollusk","snake","lizard","frog","salamander"};
 	
+	private final static String[] alpha20 = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t"};
+	private final static String[] alpha40 = {"u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N"};
+	
 	private static String filename;
 	
 	static void threadMessage(String message) 
@@ -137,6 +140,14 @@ public class MainClass
 			if(type.equals("alpha"))
 			{
 				test = alphaTest;
+			}
+			else if(type.equals("alpha20"))
+			{
+				test = alpha20;
+			}
+			else if(type.equals("alpha40"))
+			{
+				test = alpha40;
 			}
 			else if(type.equals("ani"))
 			{
