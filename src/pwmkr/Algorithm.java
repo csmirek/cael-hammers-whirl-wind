@@ -54,9 +54,9 @@ public class Algorithm {
 
 		// Take the multiplication of Cprime and Dprime
 		bfi = BigInteger.valueOf(Cprime);
-		bfi = bfi.multiply(BigInteger.valueOf(Dprime));
+		bfi = bfi.multiply(BigInteger.valueOf(Aprime));
 
-		BigInteger temp = BigInteger.valueOf(Aprime).multiply(BigInteger.valueOf(Bprime));
+		BigInteger temp = BigInteger.valueOf(Dprime).multiply(BigInteger.valueOf(Bprime));
 		
 		bfi = bfi.add(temp);
 		
