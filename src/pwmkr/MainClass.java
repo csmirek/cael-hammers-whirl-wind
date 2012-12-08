@@ -1,9 +1,16 @@
 package pwmkr;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.Vector;
 
 public class MainClass
 {
@@ -17,6 +24,8 @@ public class MainClass
 											"llama","tapir","panther","worm","fish","dolphin","whale","mollusk","snake","lizard","frog","salamander"};
 	
 	private static String filename;
+	private static String pwsFile = "pwsFile.txt";
+	private static String dpwsFile = "dpwsFile.txt";
 	
 	static void threadMessage(String message) 
 	{
@@ -29,13 +38,14 @@ public class MainClass
 	{
         private int start;
         private int length;
+        private int param1,param2;
         public static Set<String> pws;
         public static Set<String> dpws;
         private String A,B,Loop,Type;
         private Algorithm algInstance;
         
         // Constructor for the MessageLoop class, initializes all default values and creates an instance of the Algorithm class for each thread
-        public MessageLoop(int i, String loop, String type)
+        public MessageLoop(int i, String loop, String type, int p1, int p2)
         {
         	start = i;
         	length = 15;
@@ -52,6 +62,8 @@ public class MainClass
         	Loop = loop;
         	Type = type;
         	algInstance = new Algorithm(filename);
+        	param1 = p1;
+        	param2 = p2;
         }
 
 		public void run() 
@@ -142,6 +154,17 @@ public class MainClass
 			{
 				test = aniTest;
 			}
+			else if(type.equals("paramNum"))
+			{
+				String[] temp = {Integer.valueOf(param1).toString()};
+				
+				Vector<String> tmp = new Vector<String>();
+				for(int i=param1; i<param2; i++)
+					tmp.add(Integer.valueOf(i).toString());
+				temp = tmp.toArray(temp);
+				
+				test = temp;
+			}
 			else
 			{
 				test = numTest;
@@ -203,6 +226,11 @@ public class MainClass
 		int seed = Integer.parseInt(args[1]);
 		String loop = "";
 		String type = "";
+		int param1 = 0;
+		int param2 = 0;
+		String flush = "";
+		String read = "";
+		String flushFile = "pwsFile.txt";
 		try
 		{
 			loop = args[2];
@@ -213,31 +241,91 @@ public class MainClass
 			type = args[3];
 		}
 		catch(Exception e){ }
+		try
+		{
+			flush = args[4];
+		}
+		catch(Exception e){ }
+		try
+		{
+			read = args[5];
+		}
+		catch(Exception e){ }
+		try
+		{
+			param1 = Integer.parseInt(args[6]);
+			param2 = Integer.parseInt(args[7]);
+		}
+		catch(Exception e){ }
+		try
+		{
+			flushFile = args[8];
+		}
+		catch(Exception e){ }
 		
 		GenerateFile.seedGen(filename, symbolClass, 100, 100, seed);
 		long start = System.nanoTime();
 		
+		if(read.equals("t"))
+		{
+			MessageLoop.pws = Collections.synchronizedSet(new HashSet<String>(40000000));
+			File readFile = new File(flushFile);
+			Scanner scan;
+			try
+			{
+				scan = new Scanner(readFile);
+				
+				while (scan.hasNextLine())
+				{
+					MessageLoop.pws.add(scan.nextLine());
+				}
+				scan.close();
+			}
+			catch (FileNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			
+			MessageLoop.dpws = Collections.synchronizedSet(new HashSet<String>());
+			File dreadFile = new File(dpwsFile);
+			Scanner dscan;
+			try
+			{
+				dscan = new Scanner(dreadFile);
+				
+				while (dscan.hasNextLine())
+				{
+					MessageLoop.dpws.add(dscan.nextLine());
+				}
+				dscan.close();
+			}
+			catch (FileNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
 		// Create and start all the threads (20 in all)
-		Thread a = new Thread(new MessageLoop(0,loop,type));
-		Thread b = new Thread(new MessageLoop(1,loop,type));
-		Thread c = new Thread(new MessageLoop(2,loop,type));
-		Thread d = new Thread(new MessageLoop(3,loop,type));
-		Thread e = new Thread(new MessageLoop(4,loop,type));
-		Thread f = new Thread(new MessageLoop(5,loop,type));
-		Thread g = new Thread(new MessageLoop(6,loop,type));
-		Thread h = new Thread(new MessageLoop(7,loop,type));
-		Thread i = new Thread(new MessageLoop(8,loop,type));
-		Thread j = new Thread(new MessageLoop(9,loop,type));
-		Thread k = new Thread(new MessageLoop(10,loop,type));
-		Thread l = new Thread(new MessageLoop(11,loop,type));
-		Thread m = new Thread(new MessageLoop(12,loop,type));
-		Thread n = new Thread(new MessageLoop(13,loop,type));
-		Thread o = new Thread(new MessageLoop(14,loop,type));
-		Thread p = new Thread(new MessageLoop(15,loop,type));
-		Thread q = new Thread(new MessageLoop(16,loop,type));
-		Thread r = new Thread(new MessageLoop(17,loop,type));
-		Thread s = new Thread(new MessageLoop(18,loop,type));
-		Thread t = new Thread(new MessageLoop(19,loop,type));
+		Thread a = new Thread(new MessageLoop(0,loop,type,param1,param2));
+		Thread b = new Thread(new MessageLoop(1,loop,type,param1,param2));
+		Thread c = new Thread(new MessageLoop(2,loop,type,param1,param2));
+		Thread d = new Thread(new MessageLoop(3,loop,type,param1,param2));
+		Thread e = new Thread(new MessageLoop(4,loop,type,param1,param2));
+		Thread f = new Thread(new MessageLoop(5,loop,type,param1,param2));
+		Thread g = new Thread(new MessageLoop(6,loop,type,param1,param2));
+		Thread h = new Thread(new MessageLoop(7,loop,type,param1,param2));
+		Thread i = new Thread(new MessageLoop(8,loop,type,param1,param2));
+		Thread j = new Thread(new MessageLoop(9,loop,type,param1,param2));
+		Thread k = new Thread(new MessageLoop(10,loop,type,param1,param2));
+		Thread l = new Thread(new MessageLoop(11,loop,type,param1,param2));
+		Thread m = new Thread(new MessageLoop(12,loop,type,param1,param2));
+		Thread n = new Thread(new MessageLoop(13,loop,type,param1,param2));
+		Thread o = new Thread(new MessageLoop(14,loop,type,param1,param2));
+		Thread p = new Thread(new MessageLoop(15,loop,type,param1,param2));
+		Thread q = new Thread(new MessageLoop(16,loop,type,param1,param2));
+		Thread r = new Thread(new MessageLoop(17,loop,type,param1,param2));
+		Thread s = new Thread(new MessageLoop(18,loop,type,param1,param2));
+		Thread t = new Thread(new MessageLoop(19,loop,type,param1,param2));
 		a.start();
 		b.start();
 		c.start();
@@ -268,6 +356,30 @@ public class MainClass
 		long end = System.nanoTime();
 		System.out.println("total unique: " + MessageLoop.pws.size());
 		System.out.println("total number of duplicates: " + MessageLoop.dpws.size());
+		
+		if(flush.equals("t"))
+		{
+			try
+			{
+				PrintWriter fout = new PrintWriter(new FileWriter(flushFile));
+				for(String str : MessageLoop.pws)
+				{
+					fout.println(str);
+				}
+				fout.close();
+				PrintWriter dfout = new PrintWriter(new FileWriter(dpwsFile));
+				for(String str : MessageLoop.dpws)
+				{
+					dfout.println(str);
+				}
+				dfout.close();
+			}
+			catch (IOException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 		System.out.println(getTime(end-start));
 	}
 }
