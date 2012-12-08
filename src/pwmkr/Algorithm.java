@@ -52,12 +52,14 @@ public class Algorithm {
 		Cprime = Math.abs((B + C.toString()).hashCode());
 		Dprime = Math.abs((A + D.toString()).hashCode());
 
-		// Take the multiplication of Cprime and Dprime
+		// Take the multiplication of Aprime and Cprime
 		bfi = BigInteger.valueOf(Cprime);
 		bfi = bfi.multiply(BigInteger.valueOf(Aprime));
 
+		// Take the multiplication of Bprime and Dprime
 		BigInteger temp = BigInteger.valueOf(Dprime).multiply(BigInteger.valueOf(Bprime));
 		
+		// Add previous two terms
 		bfi = bfi.add(temp);
 		
 		String bfiString = bfi.toString();
