@@ -10,7 +10,10 @@ import java.util.Scanner;
 // Slight changes might exist due to performance issues
 public class Algorithm {
 
-	private Integer Aprime, Bprime, Cprime, Dprime;
+	private Integer Aprime;
+	private Integer Bprime;
+	private Integer Cprime;
+	private Integer Dprime;
 	private BigInteger bfi;
 	
 	private ArrayList<String> inRAMFile;
@@ -41,12 +44,23 @@ public class Algorithm {
 		}
 	}
 	
+	// Reverses a given string, used to handle problems with Java String hashcode collisions
+	private String reverseString(String input)
+	{
+		String ret = new String();
+		
+		for(int i=input.length()-1;i!=-1;i--)
+			ret = ret + input.charAt(i);
+		
+		return ret;
+	}
+	
 	// Manages the inputs to the algorithm and generates the BigInteger that eventually determines the password
 	private void setValues(String A, String B, Integer C, Integer D)
 	{
 		// Mask the vales of the input strings
-		Aprime = Math.abs(A.hashCode());
-		Bprime = Math.abs(B.hashCode());
+		Aprime = Math.abs(reverseString(A).hashCode());
+		Bprime = Math.abs(reverseString(B).hashCode());
 
 		// Further mask the input values
 		Cprime = Math.abs((B + C.toString()).hashCode());
