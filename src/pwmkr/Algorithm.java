@@ -50,7 +50,9 @@ public class Algorithm {
 		String ret = new String();
 		
 		for(int i=input.length()-1;i!=-1;i--)
+		{
 			ret = ret + input.charAt(i);
+		}
 		
 		return ret;
 	}
